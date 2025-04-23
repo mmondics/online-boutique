@@ -12,16 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM --platform=$BUILDPLATFORM python:3.12.8-slim@sha256:123be5684f39d8476e64f47a5fddf38f5e9d839baff5c023c815ae5bdfae0df7 AS base
+FROM --platform=$BUILDPLATFORM docker.io/python:3.12 AS base
 
 FROM base AS builder
 
-RUN apt-get -qq update \
-    && apt-get install -y --no-install-recommends g++ \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      build-essential \
+      libssl-dev \
+      pkg-config \
+      rustc \
+      cargo \
+ && rm -rf /var/lib/apt/lists/*
 
 # get packages
 COPY requirements.txt .
+ENV GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
 RUN pip install -r requirements.txt
 
 FROM base

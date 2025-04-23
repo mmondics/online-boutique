@@ -1,46 +1,52 @@
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │ 1) Builder: Debian‑slim, build deps + system OpenSSL for grpcio compile   │
+# └────────────────────────────────────────────────────────────────────────────┘
+FROM python:3.12-slim-bookworm AS builder
 
-FROM --platform=$BUILDPLATFORM python:3.12.8-alpine@sha256:54bec49592c8455de8d5983d984efff76b6417a6af9b5dcc8d0237bf6ad3bd20 AS base
+# install system OpenSSL and headers (for GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      build-essential \
+      openssl \
+      libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-FROM base AS builder
+WORKDIR /install
 
-RUN apk update \
-    && apk add --no-cache g++ linux-headers \
-    && rm -rf /var/cache/apk/*
-
-# get packages
+# copy in your full requirements (including grpcio)
 COPY requirements.txt .
-RUN pip install -r requirements.txt
 
-FROM base
-# Enable unbuffered logging
-ENV PYTHONUNBUFFERED=1
-# Enable Profiler
-ENV ENABLE_PROFILER=1
+# tell grpcio to build against system OpenSSL
+ENV GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
 
-RUN apk update \
-    && apk add --no-cache libstdc++ \
-    && rm -rf /var/cache/apk/*
+# install everything under /install
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --prefix=/install -r requirements.txt
+
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │ 2) Runtime: Debian‑slim with just the runtime libs + your code            │
+# └────────────────────────────────────────────────────────────────────────────┘
+FROM python:3.12-slim-bookworm
+
+# install runtime OpenSSL + C++ runtime
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      openssl \
+      libstdc++6 \
+      ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV PYTHONUNBUFFERED=1 \
+    ENABLE_PROFILER=1
 
 WORKDIR /email_server
 
-# Grab packages from builder
-COPY --from=builder /usr/local/lib/python3.12/ /usr/local/lib/python3.12/
+# pull in all the pip‑installed packages (built in builder)
+COPY --from=builder /install /usr/local
 
-# Add the application
+# copy your application
 COPY . .
 
 EXPOSE 8080
 ENTRYPOINT [ "python", "email_server.py" ]
+

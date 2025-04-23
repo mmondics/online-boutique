@@ -12,16 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM --platform=$BUILDPLATFORM python:3.12.8-alpine@sha256:54bec49592c8455de8d5983d984efff76b6417a6af9b5dcc8d0237bf6ad3bd20 AS base
+FROM --platform=$BUILDPLATFORM docker.io/python:3.12.8-alpine AS base
+
+RUN apk update \
+    && apk add --no-cache libstdc++ \
+    && rm -rf /var/cache/apk/*
 
 FROM base AS builder
 
 RUN apk update \
     && apk add --no-cache g++ linux-headers \
+       build-base \
+	openssl-dev \
+	python3-dev \
     && rm -rf /var/cache/apk/*
 
 # get packages
 COPY requirements.txt .
+ENV GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
 RUN pip install -r requirements.txt
 
 FROM base
