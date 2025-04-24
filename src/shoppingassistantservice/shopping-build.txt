@@ -1,0 +1,424 @@
+[1/3] STEP 1/1: FROM docker.io/python:3.12 AS base
+--> 4fce2df66b96
+[2/3] STEP 1/5: FROM 4fce2df66b9672070043ffe661daee5da610e7e9167498e55574f26dff82b3cb AS builder
+[2/3] STEP 2/5: RUN apt-get update  && apt-get install -y --no-install-recommends       build-essential       libssl-dev       pkg-config       rustc       cargo  && rm -rf /var/lib/apt/lists/*
+Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+Get:4 http://deb.debian.org/debian bookworm/main s390x Packages [8458 kB]
+Get:5 http://deb.debian.org/debian bookworm-updates/main s390x Packages [512 B]
+Get:6 http://deb.debian.org/debian-security bookworm-security/main s390x Packages [227 kB]
+Fetched 8940 kB in 1s (6064 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+libssl-dev is already the newest version (3.0.15-1~deb12u1).
+pkg-config is already the newest version (1.8.1-1).
+pkg-config set to manually installed.
+The following additional packages will be installed:
+  libgit2-1.5 libhttp-parser2.9 libllvm14 libmbedcrypto7 libmbedtls14
+  libmbedx509-1 libstd-rust-1.63 libstd-rust-dev libz3-4
+Suggested packages:
+  cargo-doc lld-14 clang-14
+Recommended packages:
+  llvm-14
+The following NEW packages will be installed:
+  build-essential cargo libgit2-1.5 libhttp-parser2.9 libllvm14 libmbedcrypto7
+  libmbedtls14 libmbedx509-1 libstd-rust-1.63 libstd-rust-dev libz3-4 rustc
+0 upgraded, 12 newly installed, 0 to remove and 5 not upgraded.
+Need to get 94.7 MB of archives.
+After this operation, 488 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bookworm/main s390x build-essential s390x 12.9 [7704 B]
+Get:2 http://deb.debian.org/debian bookworm/main s390x libhttp-parser2.9 s390x 2.9.4-5 [22.8 kB]
+Get:3 http://deb.debian.org/debian bookworm/main s390x libmbedcrypto7 s390x 2.28.3-1 [262 kB]
+Get:4 http://deb.debian.org/debian bookworm/main s390x libmbedx509-1 s390x 2.28.3-1 [126 kB]
+Get:5 http://deb.debian.org/debian bookworm/main s390x libmbedtls14 s390x 2.28.3-1 [154 kB]
+Get:6 http://deb.debian.org/debian bookworm/main s390x libgit2-1.5 s390x 1.5.1+ds-1+deb12u1 [456 kB]
+Get:7 http://deb.debian.org/debian bookworm/main s390x libz3-4 s390x 4.8.12-3.1 [6356 kB]
+Get:8 http://deb.debian.org/debian bookworm/main s390x libllvm14 s390x 1:14.0.6-12 [23.9 MB]
+Get:9 http://deb.debian.org/debian bookworm/main s390x libstd-rust-1.63 s390x 1.63.0+dfsg1-2 [21.1 MB]
+Get:10 http://deb.debian.org/debian bookworm/main s390x libstd-rust-dev s390x 1.63.0+dfsg1-2 [36.1 MB]
+Get:11 http://deb.debian.org/debian bookworm/main s390x rustc s390x 1.63.0+dfsg1-2 [2731 kB]
+Get:12 http://deb.debian.org/debian bookworm/main s390x cargo s390x 0.66.0+ds1-1 [3480 kB]
+Fetched 94.7 MB in 2s (40.6 MB/s)
+Selecting previously unselected package build-essential.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 23731 files and directories currently installed.)
+Preparing to unpack .../00-build-essential_12.9_s390x.deb ...
+Unpacking build-essential (12.9) ...
+Selecting previously unselected package libhttp-parser2.9:s390x.
+Preparing to unpack .../01-libhttp-parser2.9_2.9.4-5_s390x.deb ...
+Unpacking libhttp-parser2.9:s390x (2.9.4-5) ...
+Selecting previously unselected package libmbedcrypto7:s390x.
+Preparing to unpack .../02-libmbedcrypto7_2.28.3-1_s390x.deb ...
+Unpacking libmbedcrypto7:s390x (2.28.3-1) ...
+Selecting previously unselected package libmbedx509-1:s390x.
+Preparing to unpack .../03-libmbedx509-1_2.28.3-1_s390x.deb ...
+Unpacking libmbedx509-1:s390x (2.28.3-1) ...
+Selecting previously unselected package libmbedtls14:s390x.
+Preparing to unpack .../04-libmbedtls14_2.28.3-1_s390x.deb ...
+Unpacking libmbedtls14:s390x (2.28.3-1) ...
+Selecting previously unselected package libgit2-1.5:s390x.
+Preparing to unpack .../05-libgit2-1.5_1.5.1+ds-1+deb12u1_s390x.deb ...
+Unpacking libgit2-1.5:s390x (1.5.1+ds-1+deb12u1) ...
+Selecting previously unselected package libz3-4:s390x.
+Preparing to unpack .../06-libz3-4_4.8.12-3.1_s390x.deb ...
+Unpacking libz3-4:s390x (4.8.12-3.1) ...
+Selecting previously unselected package libllvm14:s390x.
+Preparing to unpack .../07-libllvm14_1%3a14.0.6-12_s390x.deb ...
+Unpacking libllvm14:s390x (1:14.0.6-12) ...
+Selecting previously unselected package libstd-rust-1.63:s390x.
+Preparing to unpack .../08-libstd-rust-1.63_1.63.0+dfsg1-2_s390x.deb ...
+Unpacking libstd-rust-1.63:s390x (1.63.0+dfsg1-2) ...
+Selecting previously unselected package libstd-rust-dev:s390x.
+Preparing to unpack .../09-libstd-rust-dev_1.63.0+dfsg1-2_s390x.deb ...
+Unpacking libstd-rust-dev:s390x (1.63.0+dfsg1-2) ...
+Selecting previously unselected package rustc.
+Preparing to unpack .../10-rustc_1.63.0+dfsg1-2_s390x.deb ...
+Unpacking rustc (1.63.0+dfsg1-2) ...
+Selecting previously unselected package cargo.
+Preparing to unpack .../11-cargo_0.66.0+ds1-1_s390x.deb ...
+Unpacking cargo (0.66.0+ds1-1) ...
+Setting up libz3-4:s390x (4.8.12-3.1) ...
+Setting up libmbedcrypto7:s390x (2.28.3-1) ...
+Setting up libllvm14:s390x (1:14.0.6-12) ...
+Setting up build-essential (12.9) ...
+Setting up libhttp-parser2.9:s390x (2.9.4-5) ...
+Setting up libmbedx509-1:s390x (2.28.3-1) ...
+Setting up libmbedtls14:s390x (2.28.3-1) ...
+Setting up libstd-rust-1.63:s390x (1.63.0+dfsg1-2) ...
+Setting up libstd-rust-dev:s390x (1.63.0+dfsg1-2) ...
+Setting up rustc (1.63.0+dfsg1-2) ...
+Setting up libgit2-1.5:s390x (1.5.1+ds-1+deb12u1) ...
+Setting up cargo (0.66.0+ds1-1) ...
+Processing triggers for libc-bin (2.36-9+deb12u10) ...
+--> 78c2596710de
+[2/3] STEP 3/5: COPY requirements.txt .
+--> a86a72f5c7c1
+[2/3] STEP 4/5: ENV GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
+--> 432d4d069ee4
+[2/3] STEP 5/5: RUN pip install -r requirements.txt
+Collecting aiofiles==24.1.0 (from -r requirements.txt (line 7))
+  Downloading aiofiles-24.1.0-py3-none-any.whl.metadata (10 kB)
+Collecting aiohappyeyeballs==2.6.1 (from -r requirements.txt (line 9))
+  Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl.metadata (5.9 kB)
+Collecting aiohttp==3.11.14 (from -r requirements.txt (line 11))
+  Downloading aiohttp-3.11.14-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (7.7 kB)
+Collecting aiosignal==1.3.2 (from -r requirements.txt (line 13))
+  Downloading aiosignal-1.3.2-py2.py3-none-any.whl.metadata (3.8 kB)
+Collecting annotated-types==0.7.0 (from -r requirements.txt (line 15))
+  Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+Collecting anyio==4.9.0 (from -r requirements.txt (line 17))
+  Downloading anyio-4.9.0-py3-none-any.whl.metadata (4.7 kB)
+Collecting asyncpg==0.30.0 (from -r requirements.txt (line 19))
+  Downloading asyncpg-0.30.0.tar.gz (957 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 957.7/957.7 kB 42.6 MB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting attrs==25.3.0 (from -r requirements.txt (line 21))
+  Downloading attrs-25.3.0-py3-none-any.whl.metadata (10 kB)
+Collecting blinker==1.9.0 (from -r requirements.txt (line 23))
+  Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting cachetools==5.5.2 (from -r requirements.txt (line 25))
+  Downloading cachetools-5.5.2-py3-none-any.whl.metadata (5.4 kB)
+Collecting certifi==2025.1.31 (from -r requirements.txt (line 27))
+  Downloading certifi-2025.1.31-py3-none-any.whl.metadata (2.5 kB)
+Collecting cffi==1.17.1 (from -r requirements.txt (line 32))
+  Downloading cffi-1.17.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (1.5 kB)
+Collecting charset-normalizer==3.4.1 (from -r requirements.txt (line 34))
+  Downloading charset_normalizer-3.4.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (35 kB)
+Collecting click==8.1.8 (from -r requirements.txt (line 36))
+  Downloading click-8.1.8-py3-none-any.whl.metadata (2.3 kB)
+Collecting cryptography==44.0.2 (from -r requirements.txt (line 38))
+  Downloading cryptography-44.0.2.tar.gz (710 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 710.8/710.8 kB 99.6 MB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): still running...
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting filetype==1.2.0 (from -r requirements.txt (line 40))
+  Downloading filetype-1.2.0-py2.py3-none-any.whl.metadata (6.5 kB)
+Collecting flask==3.1.0 (from -r requirements.txt (line 42))
+  Downloading flask-3.1.0-py3-none-any.whl.metadata (2.7 kB)
+Collecting frozenlist==1.5.0 (from -r requirements.txt (line 44))
+  Downloading frozenlist-1.5.0-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (13 kB)
+Collecting google-ai-generativelanguage==0.6.17 (from -r requirements.txt (line 48))
+  Downloading google_ai_generativelanguage-0.6.17-py3-none-any.whl.metadata (9.8 kB)
+Collecting google-api-core==2.24.2 (from google-api-core[grpc]==2.24.2->-r requirements.txt (line 50))
+  Downloading google_api_core-2.24.2-py3-none-any.whl.metadata (3.0 kB)
+Collecting google-auth==2.38.0 (from -r requirements.txt (line 56))
+  Downloading google_auth-2.38.0-py2.py3-none-any.whl.metadata (4.8 kB)
+Collecting google-cloud-alloydb-connector==1.7.0 (from google-cloud-alloydb-connector[asyncpg]==1.7.0->-r requirements.txt (line 64))
+  Downloading google_cloud_alloydb_connector-1.7.0-py2.py3-none-any.whl.metadata (20 kB)
+Collecting google-cloud-core==2.4.3 (from -r requirements.txt (line 66))
+  Downloading google_cloud_core-2.4.3-py2.py3-none-any.whl.metadata (2.7 kB)
+Collecting google-cloud-secret-manager==2.23.2 (from -r requirements.txt (line 68))
+  Downloading google_cloud_secret_manager-2.23.2-py3-none-any.whl.metadata (9.5 kB)
+Collecting google-cloud-storage==3.1.0 (from -r requirements.txt (line 70))
+  Downloading google_cloud_storage-3.1.0-py2.py3-none-any.whl.metadata (12 kB)
+Collecting google-crc32c==1.7.1 (from -r requirements.txt (line 72))
+  Downloading google_crc32c-1.7.1.tar.gz (14 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting google-resumable-media==2.7.2 (from -r requirements.txt (line 76))
+  Downloading google_resumable_media-2.7.2-py2.py3-none-any.whl.metadata (2.2 kB)
+Collecting googleapis-common-protos==1.69.2 (from googleapis-common-protos[grpc]==1.69.2->-r requirements.txt (line 78))
+  Downloading googleapis_common_protos-1.69.2-py3-none-any.whl.metadata (9.3 kB)
+Collecting greenlet==3.1.1 (from -r requirements.txt (line 83))
+  Downloading greenlet-3.1.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (3.8 kB)
+Collecting grpc-google-iam-v1==0.14.2 (from -r requirements.txt (line 85))
+  Downloading grpc_google_iam_v1-0.14.2-py3-none-any.whl.metadata (9.1 kB)
+Collecting grpcio==1.71.0 (from -r requirements.txt (line 87))
+  Downloading grpcio-1.71.0.tar.gz (12.5 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.5/12.5 MB 81.2 MB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting grpcio-status==1.71.0 (from -r requirements.txt (line 93))
+  Downloading grpcio_status-1.71.0-py3-none-any.whl.metadata (1.1 kB)
+Collecting h11==0.14.0 (from -r requirements.txt (line 95))
+  Downloading h11-0.14.0-py3-none-any.whl.metadata (8.2 kB)
+Collecting httpcore==1.0.7 (from -r requirements.txt (line 97))
+  Downloading httpcore-1.0.7-py3-none-any.whl.metadata (21 kB)
+Collecting httpx==0.28.1 (from -r requirements.txt (line 99))
+  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting idna==3.10 (from -r requirements.txt (line 101))
+  Downloading idna-3.10-py3-none-any.whl.metadata (10 kB)
+Collecting itsdangerous==2.2.0 (from -r requirements.txt (line 107))
+  Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+Collecting jinja2==3.1.6 (from -r requirements.txt (line 109))
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting jsonpatch==1.33 (from -r requirements.txt (line 111))
+  Downloading jsonpatch-1.33-py2.py3-none-any.whl.metadata (3.0 kB)
+Collecting jsonpointer==3.0.0 (from -r requirements.txt (line 113))
+  Downloading jsonpointer-3.0.0-py2.py3-none-any.whl.metadata (2.3 kB)
+Collecting langchain==0.3.21 (from -r requirements.txt (line 115))
+  Downloading langchain-0.3.21-py3-none-any.whl.metadata (7.8 kB)
+Collecting langchain-core==0.3.49 (from -r requirements.txt (line 117))
+  Downloading langchain_core-0.3.49-py3-none-any.whl.metadata (5.9 kB)
+Collecting langchain-google-alloydb-pg==0.10.0 (from -r requirements.txt (line 123))
+  Downloading langchain_google_alloydb_pg-0.10.0-py3-none-any.whl.metadata (24 kB)
+Collecting langchain-google-genai==2.1.1 (from -r requirements.txt (line 125))
+  Downloading langchain_google_genai-2.1.1-py3-none-any.whl.metadata (4.7 kB)
+Collecting langchain-text-splitters==0.3.7 (from -r requirements.txt (line 127))
+  Downloading langchain_text_splitters-0.3.7-py3-none-any.whl.metadata (1.9 kB)
+Collecting langsmith==0.3.19 (from -r requirements.txt (line 129))
+  Downloading langsmith-0.3.19-py3-none-any.whl.metadata (15 kB)
+Collecting markupsafe==3.0.2 (from -r requirements.txt (line 133))
+  Downloading markupsafe-3.0.2.tar.gz (20 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting multidict==6.2.0 (from -r requirements.txt (line 137))
+  Downloading multidict-6.2.0-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (4.9 kB)
+Collecting numpy==2.2.4 (from -r requirements.txt (line 141))
+  Downloading numpy-2.2.4.tar.gz (20.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 20.3/20.3 MB 64.6 MB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Installing backend dependencies: started
+  Installing backend dependencies: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): still running...
+  Preparing metadata (pyproject.toml): still running...
+  Preparing metadata (pyproject.toml): still running...
+  Preparing metadata (pyproject.toml): still running...
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting orjson==3.10.16 (from -r requirements.txt (line 145))
+  Downloading orjson-3.10.16-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (41 kB)
+Collecting packaging==24.2 (from -r requirements.txt (line 147))
+  Downloading packaging-24.2-py3-none-any.whl.metadata (3.2 kB)
+Collecting pgvector==0.4.0 (from -r requirements.txt (line 151))
+  Downloading pgvector-0.4.0-py3-none-any.whl.metadata (17 kB)
+Collecting pillow==11.1.0 (from -r requirements.txt (line 153))
+  Downloading pillow-11.1.0.tar.gz (46.7 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 46.7/46.7 MB 74.0 MB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting propcache==0.3.1 (from -r requirements.txt (line 155))
+  Downloading propcache-0.3.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (10 kB)
+Collecting proto-plus==1.26.1 (from -r requirements.txt (line 159))
+  Downloading proto_plus-1.26.1-py3-none-any.whl.metadata (2.2 kB)
+Collecting protobuf==5.29.4 (from -r requirements.txt (line 164))
+  Downloading protobuf-5.29.4-py3-none-any.whl.metadata (592 bytes)
+Collecting pyasn1==0.6.1 (from -r requirements.txt (line 174))
+  Downloading pyasn1-0.6.1-py3-none-any.whl.metadata (8.4 kB)
+Collecting pyasn1-modules==0.4.2 (from -r requirements.txt (line 178))
+  Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting pycparser==2.22 (from -r requirements.txt (line 180))
+  Using cached pycparser-2.22-py3-none-any.whl.metadata (943 bytes)
+Collecting pydantic==2.11.0 (from -r requirements.txt (line 182))
+  Downloading pydantic-2.11.0-py3-none-any.whl.metadata (63 kB)
+Collecting pydantic-core==2.33.0 (from -r requirements.txt (line 188))
+  Downloading pydantic_core-2.33.0-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (6.8 kB)
+Collecting pyyaml==6.0.2 (from -r requirements.txt (line 190))
+  Downloading PyYAML-6.0.2-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (2.1 kB)
+Collecting requests==2.32.3 (from -r requirements.txt (line 194))
+  Downloading requests-2.32.3-py3-none-any.whl.metadata (4.6 kB)
+Collecting requests-toolbelt==1.0.0 (from -r requirements.txt (line 202))
+  Downloading requests_toolbelt-1.0.0-py2.py3-none-any.whl.metadata (14 kB)
+Collecting rsa==4.9 (from -r requirements.txt (line 204))
+  Downloading rsa-4.9-py3-none-any.whl.metadata (4.2 kB)
+Collecting sniffio==1.3.1 (from -r requirements.txt (line 206))
+  Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+Collecting sqlalchemy==2.0.40 (from sqlalchemy[asyncio]==2.0.40->-r requirements.txt (line 208))
+  Downloading sqlalchemy-2.0.40-py3-none-any.whl.metadata (9.6 kB)
+Collecting tenacity==9.0.0 (from -r requirements.txt (line 212))
+  Downloading tenacity-9.0.0-py3-none-any.whl.metadata (1.2 kB)
+Collecting typing-extensions==4.13.0 (from -r requirements.txt (line 214))
+  Downloading typing_extensions-4.13.0-py3-none-any.whl.metadata (3.0 kB)
+Collecting typing-inspection==0.4.0 (from -r requirements.txt (line 222))
+  Downloading typing_inspection-0.4.0-py3-none-any.whl.metadata (2.6 kB)
+Collecting urllib3==2.3.0 (from -r requirements.txt (line 224))
+  Downloading urllib3-2.3.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting werkzeug==3.1.3 (from -r requirements.txt (line 226))
+  Downloading werkzeug-3.1.3-py3-none-any.whl.metadata (3.7 kB)
+Collecting yarl==1.18.3 (from -r requirements.txt (line 228))
+  Downloading yarl-1.18.3-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (69 kB)
+Collecting zstandard==0.23.0 (from -r requirements.txt (line 230))
+  Downloading zstandard-0.23.0-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl.metadata (3.0 kB)
+Downloading aiofiles-24.1.0-py3-none-any.whl (15 kB)
+Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl (15 kB)
+Downloading aiohttp-3.11.14-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (1.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 109.4 MB/s eta 0:00:00
+Downloading aiosignal-1.3.2-py2.py3-none-any.whl (7.6 kB)
+Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+Downloading anyio-4.9.0-py3-none-any.whl (100 kB)
+Downloading attrs-25.3.0-py3-none-any.whl (63 kB)
+Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Downloading cachetools-5.5.2-py3-none-any.whl (10 kB)
+Downloading certifi-2025.1.31-py3-none-any.whl (166 kB)
+Using cached cffi-1.17.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (471 kB)
+Downloading charset_normalizer-3.4.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (143 kB)
+Downloading click-8.1.8-py3-none-any.whl (98 kB)
+Downloading filetype-1.2.0-py2.py3-none-any.whl (19 kB)
+Downloading flask-3.1.0-py3-none-any.whl (102 kB)
+Downloading frozenlist-1.5.0-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (291 kB)
+Downloading google_ai_generativelanguage-0.6.17-py3-none-any.whl (1.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 101.9 MB/s eta 0:00:00
+Downloading google_api_core-2.24.2-py3-none-any.whl (160 kB)
+Downloading google_auth-2.38.0-py2.py3-none-any.whl (210 kB)
+Downloading google_cloud_alloydb_connector-1.7.0-py2.py3-none-any.whl (42 kB)
+Downloading google_cloud_core-2.4.3-py2.py3-none-any.whl (29 kB)
+Downloading google_cloud_secret_manager-2.23.2-py3-none-any.whl (215 kB)
+Downloading google_cloud_storage-3.1.0-py2.py3-none-any.whl (174 kB)
+Downloading google_resumable_media-2.7.2-py2.py3-none-any.whl (81 kB)
+Downloading googleapis_common_protos-1.69.2-py3-none-any.whl (293 kB)
+Downloading greenlet-3.1.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (658 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 658.0/658.0 kB 100.1 MB/s eta 0:00:00
+Downloading grpc_google_iam_v1-0.14.2-py3-none-any.whl (19 kB)
+Downloading grpcio_status-1.71.0-py3-none-any.whl (14 kB)
+Downloading h11-0.14.0-py3-none-any.whl (58 kB)
+Downloading httpcore-1.0.7-py3-none-any.whl (78 kB)
+Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+Downloading idna-3.10-py3-none-any.whl (70 kB)
+Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+Downloading jsonpatch-1.33-py2.py3-none-any.whl (12 kB)
+Downloading jsonpointer-3.0.0-py2.py3-none-any.whl (7.6 kB)
+Downloading langchain-0.3.21-py3-none-any.whl (1.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.0/1.0 MB 104.7 MB/s eta 0:00:00
+Downloading langchain_core-0.3.49-py3-none-any.whl (420 kB)
+Downloading langchain_google_alloydb_pg-0.10.0-py3-none-any.whl (57 kB)
+Downloading langchain_google_genai-2.1.1-py3-none-any.whl (40 kB)
+Downloading langchain_text_splitters-0.3.7-py3-none-any.whl (32 kB)
+Downloading langsmith-0.3.19-py3-none-any.whl (351 kB)
+Downloading multidict-6.2.0-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (135 kB)
+Downloading orjson-3.10.16-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (142 kB)
+Downloading packaging-24.2-py3-none-any.whl (65 kB)
+Downloading pgvector-0.4.0-py3-none-any.whl (27 kB)
+Downloading propcache-0.3.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (250 kB)
+Downloading proto_plus-1.26.1-py3-none-any.whl (50 kB)
+Downloading protobuf-5.29.4-py3-none-any.whl (172 kB)
+Downloading pyasn1-0.6.1-py3-none-any.whl (83 kB)
+Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+Using cached pycparser-2.22-py3-none-any.whl (117 kB)
+Downloading pydantic-2.11.0-py3-none-any.whl (442 kB)
+Downloading pydantic_core-2.33.0-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (2.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.7/2.7 MB 67.1 MB/s eta 0:00:00
+Downloading PyYAML-6.0.2-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (766 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 766.2/766.2 kB 64.0 MB/s eta 0:00:00
+Downloading requests-2.32.3-py3-none-any.whl (64 kB)
+Downloading requests_toolbelt-1.0.0-py2.py3-none-any.whl (54 kB)
+Downloading rsa-4.9-py3-none-any.whl (34 kB)
+Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+Downloading sqlalchemy-2.0.40-py3-none-any.whl (1.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 106.2 MB/s eta 0:00:00
+Downloading tenacity-9.0.0-py3-none-any.whl (28 kB)
+Downloading typing_extensions-4.13.0-py3-none-any.whl (45 kB)
+Downloading typing_inspection-0.4.0-py3-none-any.whl (14 kB)
+Downloading urllib3-2.3.0-py3-none-any.whl (128 kB)
+Downloading werkzeug-3.1.3-py3-none-any.whl (224 kB)
+Downloading yarl-1.18.3-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (341 kB)
+Downloading zstandard-0.23.0-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl (5.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.3/5.3 MB 64.2 MB/s eta 0:00:00
+Building wheels for collected packages: asyncpg, cryptography, google-crc32c, grpcio, markupsafe, numpy, pillow
+  Building wheel for asyncpg (pyproject.toml): started
+  Building wheel for asyncpg (pyproject.toml): finished with status 'done'
+  Created wheel for asyncpg: filename=asyncpg-0.30.0-cp312-cp312-linux_s390x.whl size=3425826 sha256=55f81ee67492c31ec4146cd801fc84f4c4caecd39ca191bf979f091b955cb28e
+  Stored in directory: /root/.cache/pip/wheels/57/02/43/88d6f40076ee965f7d7cc194734ef6d404fbbaf84cbf084ff3
+  Building wheel for cryptography (pyproject.toml): started
+  Building wheel for cryptography (pyproject.toml): finished with status 'error'
+  Building wheel for google-crc32c (pyproject.toml): started
+  Building wheel for google-crc32c (pyproject.toml): finished with status 'done'
+  Created wheel for google-crc32c: filename=google_crc32c-1.7.1-py3-none-any.whl size=13242 sha256=c88307a7dc3df6950db88b5e3d574b354c64f46b8211b65d023fdd803244c1a2
+  Stored in directory: /root/.cache/pip/wheels/53/d2/2c/b17b7c197e530a93c16f86f98b749900e039497be263098bc6
+  Building wheel for grpcio (pyproject.toml): started
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): still running...
+  Building wheel for grpcio (pyproject.toml): finished with status 'done'
+  Created wheel for grpcio: filename=grpcio-1.71.0-cp312-cp312-linux_s390x.whl size=137452726 sha256=60541ee1f034f54558d0b0f7252dd7272fd78a77ab0619e240c4d643f3d0d32e
+  Stored in directory: /root/.cache/pip/wheels/96/99/8f/8779a4dd5867a5ae30d383dc380e8516731a18846f5d06ee58
+  Building wheel for markupsafe (pyproject.toml): started
+  Building wheel for markupsafe (pyproject.toml): finished with status 'done'
+  Created wheel for markupsafe: filename=markupsafe-3.0.2-cp312-cp312-linux_s390x.whl size=22821 sha256=57d4c0922481e194f5aa9e04b33355f052d5d926fd6e9a7e840ec3862f9129a3
+  Stored in directory: /root/.cache/pip/wheels/75/a1/5f/85ee819e5d341669dffcb77b9388f5fda63ec0e55ed0397d79
+  Building wheel for numpy (pyproject.toml): started
+  Building wheel for numpy (pyproject.toml): finished with status 'done'
+  Created wheel for numpy: filename=numpy-2.2.4-cp312-cp312-linux_s390x.whl size=8047705 sha256=4eebd9030cf1e1e3d35c3690ce71d7b510c8989c5595cde9c25a4ff6eafef601
+  Stored in directory: /root/.cache/pip/wheels/02/87/cb/0e40c75232acfb8614f1d1a57fa4874ad77c4572cde63f2bf9
+  Building wheel for pillow (pyproject.toml): started
+  Building wheel for pillow (pyproject.toml): finished with status 'done'
+  Created wheel for pillow: filename=pillow-11.1.0-cp312-cp312-linux_s390x.whl size=1361130 sha256=ddf44479a0a36a5ad7e4f6b3204ff71f7d3aa26c88d8a6f466ac78be74c500ea
+  Stored in directory: /root/.cache/pip/wheels/15/71/95/681aba7fe614d241ebf82e0887e5222882e3b4203593b6e97a
+Successfully built asyncpg google-crc32c grpcio markupsafe numpy pillow
+Failed to build cryptography
