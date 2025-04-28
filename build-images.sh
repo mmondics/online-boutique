@@ -36,11 +36,20 @@ RESULTS_FILE=$(mktemp)
 # Find and loop over all Dockerfiles
 find src/ -type f -name Dockerfile | while IFS= read -r dockerfile; do
     DIR=$(dirname "$dockerfile")
-    COMPONENT_NAME=$(basename "$DIR" | tr '[:upper:]' '[:lower:]')
+
+    # Special case for cartservice (because its Dockerfile is under src/cartservice/src)
+    if [[ "$DIR" == *"/cartservice/src" ]]; then
+        COMPONENT_NAME="cartservice"
+        BUILD_CONTEXT="src/cartservice/src"
+    else
+        COMPONENT_NAME=$(basename "$DIR" | tr '[:upper:]' '[:lower:]')
+        BUILD_CONTEXT="$DIR"
+    fi
+
     IMAGE_TAG="quay.io/mmondics/boutique-${COMPONENT_NAME}:${VERSION}-${ARCH}-test"
 
-    echo "Building image for $COMPONENT_NAME from $DIR..."
-    if podman build -t "$IMAGE_TAG" "$DIR"; then
+    echo "Building image for $COMPONENT_NAME from $BUILD_CONTEXT..."
+    if podman build -t "$IMAGE_TAG" "$BUILD_CONTEXT"; then
         echo "✅ Build succeeded for $COMPONENT_NAME"
         if $PUSH_IMAGES; then
             if podman push "$IMAGE_TAG"; then
