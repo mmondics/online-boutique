@@ -29,13 +29,13 @@ find src/ -type f -name Dockerfile | while IFS= read -r dockerfile; do
         COMPONENT_NAME=$(basename "$DIR" | tr '[:upper:]' '[:lower:]')
     fi
 
-    MANIFEST_TAG="quay.io/mmondics/boutique-${COMPONENT_NAME}:${VERSION}-test"
+    MANIFEST_TAG="quay.io/mmondics/boutique-${COMPONENT_NAME}:${VERSION}"
 
     echo "🔧 Creating manifest for ${MANIFEST_TAG}"
     podman manifest create "$MANIFEST_TAG"
 
     for ARCH in "${ARCHITECTURES[@]}"; do
-        IMAGE_TAG="quay.io/mmondics/boutique-${COMPONENT_NAME}:${VERSION}-${ARCH}-test"
+        IMAGE_TAG="quay.io/mmondics/boutique-${COMPONENT_NAME}:${VERSION}-${ARCH}"
 
         if skopeo inspect --raw "docker://${IMAGE_TAG}" > /dev/null 2>&1; then
             echo "➕ Adding $IMAGE_TAG to manifest"
