@@ -31,10 +31,7 @@ spec:
     spec:
       serviceAccountName: frontend
       securityContext:
-        fsGroup: 1000
-        runAsGroup: 1000
         runAsNonRoot: true
-        runAsUser: 1000
       containers:
         - name: server
           securityContext:
@@ -44,7 +41,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: frontend
+          image: quay.io/mmondics/boutique-frontend:1.0.0
           ports:
           - containerPort: 8080
           readinessProbe:

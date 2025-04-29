@@ -30,10 +30,7 @@ spec:
       serviceAccountName: paymentservice
       terminationGracePeriodSeconds: 5
       securityContext:
-        fsGroup: 1000
-        runAsGroup: 1000
         runAsNonRoot: true
-        runAsUser: 1000
       containers:
       - name: server
         securityContext:
@@ -43,7 +40,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: paymentservice
+        image: quay.io/mmondics/boutique-paymentservice:1.0.0
         ports:
         - containerPort: 50051
         env:

@@ -21,7 +21,7 @@ spec:
   selector:
     matchLabels:
       app: loadgenerator
-  replicas: 1
+  replicas: 0
   template:
     metadata:
       labels:
@@ -33,10 +33,7 @@ spec:
       terminationGracePeriodSeconds: 5
       restartPolicy: Always
       securityContext:
-        fsGroup: 1000
-        runAsGroup: 1000
         runAsNonRoot: true
-        runAsUser: 1000
       initContainers:
       - command:
         - /bin/sh
@@ -77,10 +74,10 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: loadgenerator
+        image: quay.io/mmondics/boutique-loadgenerator:1.0.0
         env:
         - name: FRONTEND_ADDR
-          value: "frontend:80"
+          value: "frontend.online-boutique.svc.cluster.local:80"
         - name: USERS
           value: "10"
         - name: RATE

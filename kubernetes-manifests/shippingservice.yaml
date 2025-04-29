@@ -29,10 +29,7 @@ spec:
     spec:
       serviceAccountName: shippingservice
       securityContext:
-        fsGroup: 1000
-        runAsGroup: 1000
         runAsNonRoot: true
-        runAsUser: 1000
       containers:
       - name: server
         securityContext:
@@ -42,7 +39,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: shippingservice
+        image: quay.io/mmondics/boutique-shippingservice:1.0.0
         ports:
         - containerPort: 50051
         env:
