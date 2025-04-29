@@ -21,12 +21,12 @@ RUN apk update \
          build-base       \
          libffi-dev       \
          linux-headers    \
-	 pkgconf          \
-	 zeromq-dev \
-	 libsodium-dev \
-	 cmake \
+         pkgconf          \
+         zeromq-dev       \
+         libsodium-dev    \
+         cmake            \
          wget \
-    && rm -rf /var/cache/apk/*
+   && rm -rf /var/cache/apk/*
 
 COPY requirements.txt .
 
@@ -35,7 +35,9 @@ RUN pip install --prefix="/install" -r requirements.txt
 FROM base
 
 RUN apk update \
-    && apk add --no-cache libstdc++ \
+    && apk add --no-cache \
+        libstdc++ \
+        libzmq \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /loadgen
@@ -48,4 +50,5 @@ COPY locustfile.py .
 # enable gevent support in debugger
 ENV GEVENT_SUPPORT=True
 
+# Use environment vars for host, user count, and spawn rate
 ENTRYPOINT locust --host="http://${FRONTEND_ADDR}" --headless -u "${USERS:-10}" -r "${RATE:-1}" 2>&1
