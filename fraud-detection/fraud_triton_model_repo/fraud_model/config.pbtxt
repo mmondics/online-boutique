@@ -1,0 +1,29 @@
+backend: "onnxmlir"
+
+input [
+  {
+    name: "country"
+    data_type: TYPE_INT64
+    dims: [ -1 ]
+  },
+  {
+    name: "amount"
+    data_type: TYPE_FP32
+    dims: [ -1 ]
+  }
+]
+
+output [
+  {
+    name: "fraud_probability"
+    data_type: TYPE_FP32
+    dims: [ -1, 1 ]
+  }
+]
+
+instance_group [
+  {
+    kind: KIND_CPU
+    count: 4
+  }
+]

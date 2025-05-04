@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: triton-accelerated
+  namespace: online-boutique
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: triton-accelerated
+  template:
+    metadata:
+      labels:
+        app: triton-accelerated
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: s390x
+      containers:
+      - name: triton
+        image: icr.io/ibmz/ibmz-accelerated-for-nvidia-triton-inference-server:1.3.0
+        imagePullPolicy: IfNotPresent
+        args:
+        - tritonserver
+        - --model-repository=/models
+        - --model-control-mode=none
+        - --strict-readiness=false
+        - --exit-on-error=false
+        - --exit-timeout=0
+        stdin: true
+        tty: true
+        env:
+        - name: model-repository
+          value: models
+        ports:
+        - containerPort: 8000
+          name: http
+        - containerPort: 8001
+          name: grpc
+        - containerPort: 8002
+          name: metrics
+        volumeMounts:
+        - name: model-pvc
+          mountPath: /models
+        livenessProbe:
+          httpGet:
+            path: /v2/health/live
+            port: http
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /v2/health/ready
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /v2/health/ready
+            port: http
+          periodSeconds: 10
+          failureThreshold: 30
+      volumes:
+      - name: model-pvc
+        persistentVolumeClaim:
+          claimName: triton-models-pvc
+      imagePullSecrets:
+      - name: icr-pullsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-triton-accelerated
+  namespace: online-boutique
+  labels:
+    app: triton-accelerated
+spec:
+  selector:
+    app: triton-accelerated
+  ports:
+    - port: 8000
+      targetPort: http
+      name: http-inference-server
+    - port: 8001
+      targetPort: grpc
+      name: grpc-inference-server
+    - port: 8002
+      targetPort: metrics
+      name: metrics-inference-server

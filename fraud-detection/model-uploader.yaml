@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: model-uploader
+  namespace: online-boutique
+spec:
+  containers:
+  - name: uploader
+    image: quay.io/mmondics/busybox:1.37.0
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: model-pvc
+      mountPath: /models
+  volumes:
+  - name: model-pvc
+    persistentVolumeClaim:
+      claimName: triton-models-pvc
