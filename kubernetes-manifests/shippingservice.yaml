@@ -39,7 +39,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: quay.io/mmondics/boutique-shippingservice:1.0.0
+        image: quay.io/mmondics/boutique-shippingservice:2.0.0
         ports:
         - containerPort: 50051
         env:

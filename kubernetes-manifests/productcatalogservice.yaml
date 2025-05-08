@@ -40,7 +40,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: quay.io/mmondics/boutique-productcatalogservice:1.0.0
+        image: quay.io/mmondics/boutique-productcatalogservice:2.0.0
         ports:
         - containerPort: 3550
         env:

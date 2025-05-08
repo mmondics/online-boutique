@@ -74,7 +74,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: quay.io/mmondics/boutique-loadgenerator:1.0.0
+        image: quay.io/mmondics/boutique-loadgenerator:2.0.0
         env:
         - name: FRONTEND_ADDR
           value: "frontend.online-boutique.svc.cluster.local:80"

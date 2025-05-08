@@ -40,7 +40,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: quay.io/mmondics/boutique-currencyservice:1.0.0
+        image: quay.io/mmondics/boutique-currencyservice:2.0.0
         ports:
         - name: grpc
           containerPort: 7000
